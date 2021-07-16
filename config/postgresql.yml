@@ -1,0 +1,8 @@
+adapter: postgresql
+pool: 5
+timeout: 5000
+host: localhost
+database: knowledge_base_portal
+username: ilytvy
+password:
+encoding: unicode
