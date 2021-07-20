@@ -9,6 +9,16 @@ class ArticlesController < ApplicationController
     render json: { articles: articles }
   end
 
+  def show
+    use_case = ::UseCases::Articles::Get.new do |i|
+      i.data_provider = data_provider
+    end
+
+    article = use_case.perform(article_id: params[:id])
+
+    render json: { article: article }
+  end
+
   private
 
   def data_provider

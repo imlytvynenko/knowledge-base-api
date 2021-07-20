@@ -1,0 +1,3 @@
+adapter: mongodb
+host: localhost
+database: knowledge_base_portal

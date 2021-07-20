@@ -7,10 +7,8 @@ module UseCases
         yield self
       end
       
-      def perform(options)
-        return [] if options[:term].blank?
-
-        data_provider.fetch_previews('title', options[:term])
+      def perform({ article_id })
+        data_provider.fetch_details(article_id)
       end
     end
   end

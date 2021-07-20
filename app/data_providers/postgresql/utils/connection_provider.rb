@@ -1,7 +1,8 @@
 module Postgresql
   module Utils
     module ConnectionProvider
-      MAX_SELECTION_COUNT = 50
+      DEFAULT_LIMIT = 50
+      DEFAULT_OFFSET = 0
 
       def connection
         @connection ||= ActiveRecord::Base.establish_connection(

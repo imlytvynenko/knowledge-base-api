@@ -1,26 +1,21 @@
 module Postgresql
   class ArticleDataProvider
     include Postgresql::Utils::ConnectionProvider
-    
-    def all(options = { limit: MAX_SELECTION_COUNT })
-      results = connection.execute('SELECT * from articles LIMIT %s' % options[:limit])
-    
+
+    def fetch_previews(field, value)
+      results = connection.execute("SELECT * from articles WHERE #{field} ILIKE '%#{value}%'")
+
       to_articles results
     end
 
-    def find_by(field, value)
-      results = connection.execute(
-        ActiveRecord::Base.sanitize_sql_array([
-          Arel.sql(
-            <<-SQL
-              SELECT * from articles
-              WHERE #{field} ILIKE :value
-            SQL
-          ), { value: ('%' + value.downcase + '%') }
-        ])
-      )
+    def fetch_details article_id
+      results = connection.execute("SELECT * from articles WHERE id ILIKE #{article_id}")
 
-      to_articles results
+      to_article results[0]
+    end
+
+    def insert data
+      connection.execute()
     end
 
     private
