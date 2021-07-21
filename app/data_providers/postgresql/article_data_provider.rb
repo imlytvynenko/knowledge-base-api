@@ -2,16 +2,24 @@ module Postgresql
   class ArticleDataProvider
     include Postgresql::Utils::ConnectionProvider
 
-    def fetch_previews(field, value)
-      results = connection.execute("SELECT * from articles WHERE #{field} ILIKE '%#{value}%'")
+    def full_text_search(term)
+      results = connection.execute <<-SQL
+        SELECT * 
+        FROM articles 
+        WHERE to_tsvector(articles.content) || to_tsvector(articles.title) @@ plainto_tsquery(\'#{term.to_s}\');
+      SQL
+    end
+
+    def fetch_previews(field, term)
+      results = connection.execute("SELECT * from articles WHERE #{field} ILIKE '%#{term}%'")
 
       to_articles results
     end
 
     def fetch_details article_id
-      results = connection.execute("SELECT * from articles WHERE id ILIKE #{article_id}")
+      results = connection.execute("SELECT * from articles WHERE id = #{article_id}")
 
-      to_article results[0]
+      to_article results[0].symbolize_keys
     end
 
     def insert data

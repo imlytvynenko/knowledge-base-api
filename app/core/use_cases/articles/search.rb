@@ -10,7 +10,7 @@ module UseCases
       def perform(options)
         return [] if options[:term].blank?
 
-        data_provider.fetch_previews('title', options[:term])
+        data_provider.full_text_search(options[:term])
       end
     end
   end

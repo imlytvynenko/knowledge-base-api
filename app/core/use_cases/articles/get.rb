@@ -1,13 +1,13 @@
 module UseCases
   module Articles
-    class Search
+    class Get
       attr_accessor :data_provider
 
       def initialize
         yield self
       end
       
-      def perform({ article_id })
+      def perform(article_id:)
         data_provider.fetch_details(article_id)
       end
     end
