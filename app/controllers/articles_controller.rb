@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
       i.data_provider = data_provider
     end
 
-    articles = use_case.perform({ term: params[:term] })
+    articles = use_case.perform(params.slice(:offset, :limit, :term))
 
     render json: { articles: articles }
   end

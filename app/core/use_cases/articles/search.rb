@@ -8,9 +8,7 @@ module UseCases
       end
       
       def perform(options)
-        return [] if options[:term].blank?
-
-        data_provider.full_text_search(options[:term])
+        data_provider.full_text_search(options)
       end
     end
   end

@@ -2,12 +2,31 @@ module Postgresql
   class ArticleDataProvider
     include Postgresql::Utils::ConnectionProvider
 
-    def full_text_search(term)
-      results = connection.execute <<-SQL
-        SELECT * 
-        FROM articles 
-        WHERE to_tsvector(articles.content) || to_tsvector(articles.title) @@ plainto_tsquery(\'#{term.to_s}\');
-      SQL
+    attr_accessor :options
+
+    def initialize options = {}
+      self.options = options
+    end
+
+    def full_text_search(options)
+      connection.execute(
+        load_collection_query(options[:term], options[:offset])
+      )
+    end
+
+    def load_collection_query(term, offset)
+      query = "SELECT * FROM articles "
+      query = query + search_condition_query(term) if term.present?
+      query = query + batch_settings_query(offset) if offset.present?
+      query
+    end
+    
+    def batch_settings_query(offset)
+      "LIMIT #{limit} OFFSET #{offset || 0} "
+    end
+
+    def search_condition_query(term)
+      "WHERE to_tsvector(articles.content) || to_tsvector(articles.title) @@ plainto_tsquery(\'#{term.to_s}\') "
     end
 
     def fetch_previews(field, term)
@@ -42,6 +61,10 @@ module Postgresql
         created_at: result[:created_at].to_datetime,
         updated_at: result[:updated_at].to_datetime
       })
+    end
+
+    def limit
+      options[:limit] || DEFAULT_BATCH_LIMIT
     end
   end
 end

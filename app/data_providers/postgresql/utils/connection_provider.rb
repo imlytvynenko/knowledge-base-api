@@ -1,8 +1,7 @@
 module Postgresql
   module Utils
     module ConnectionProvider
-      DEFAULT_LIMIT = 50
-      DEFAULT_OFFSET = 0
+      DEFAULT_BATCH_LIMIT = 5
 
       def connection
         @connection ||= ActiveRecord::Base.establish_connection(
