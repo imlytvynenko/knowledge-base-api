@@ -1,6 +1,6 @@
 module Entities
   class Article < Dry::Struct
-    attribute :id, Types::Integer
+    attribute :id, Types::String
     attribute :title, Types::String
     attribute :content, Types::String
     # attribute? :tags, Types::Array

@@ -22,6 +22,7 @@ class ArticlesController < ApplicationController
   private
 
   def data_provider
+    # @data_provider ||= Mongodb::ArticleDataProvider.new
     @data_provider ||= Postgresql::ArticleDataProvider.new
   end
 end

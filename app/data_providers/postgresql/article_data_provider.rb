@@ -9,40 +9,21 @@ module Postgresql
     end
 
     def full_text_search(options)
-      connection.execute(
-        load_collection_query(options[:term], options[:offset])
-      )
-    end
+      query = Queries::Article.select({ 
+        columns: [:id, :title, :content, :created_at], 
+        offset: options[:offset],
+        term: options[:term]
+      })
 
-    def load_collection_query(term, offset)
-      query = "SELECT * FROM articles "
-      query = query + search_condition_query(term) if term.present?
-      query = query + batch_settings_query(offset) if offset.present?
-      query
-    end
-    
-    def batch_settings_query(offset)
-      "LIMIT #{limit} OFFSET #{offset || 0} "
-    end
-
-    def search_condition_query(term)
-      "WHERE to_tsvector(articles.content) || to_tsvector(articles.title) @@ plainto_tsquery(\'#{term.to_s}\') "
-    end
-
-    def fetch_previews(field, term)
-      results = connection.execute("SELECT * from articles WHERE #{field} ILIKE '%#{term}%'")
-
-      to_articles results
+      connection.execute(query)
     end
 
     def fetch_details article_id
-      results = connection.execute("SELECT * from articles WHERE id = #{article_id}")
+      query = Queries::Article.select(columns: ['*'], id: article_id)
+
+      results = connection.execute(query) 
 
       to_article results[0].symbolize_keys
-    end
-
-    def insert data
-      connection.execute()
     end
 
     private
@@ -55,7 +36,7 @@ module Postgresql
 
     def to_article result
       ::Entities::Article.new({
-        id: result[:id],
+        id: result[:id].to_s,
         title: result[:title],
         content: result[:content],
         created_at: result[:created_at].to_datetime,
