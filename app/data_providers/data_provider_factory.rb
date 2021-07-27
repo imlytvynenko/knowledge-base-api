@@ -1,5 +1,5 @@
 class DataProviderFactory
-  DRIVER = :mongodb
+  DRIVER = :postgresql
 
   def self.build(name)
     # TODO: handle exception when name is incorrect

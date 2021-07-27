@@ -9,10 +9,7 @@ class AuthenticationController < ApplicationController
     @user = use_case.perform(params)
 
     if @user.present?
-      token = JsonWebToken.encode(user_id: @user.id)
-      time = Time.now + 24.hours.to_i
-      render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
-                     username: @user.username }, status: :ok
+      render json: use_case.auth_data, status: :ok
     else
       render json: { error: 'unauthorized' }, status: :unauthorized
     end
