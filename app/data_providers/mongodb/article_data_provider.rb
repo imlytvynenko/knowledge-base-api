@@ -29,7 +29,7 @@ module Mongodb
     def data_scope(searchTerm)
       return documents.find if searchTerm.blank?
 
-      documents.find('$text': { '$search': 'test', '$caseSensitive': false })
+      documents.find('$text': { '$search': searchTerm, '$caseSensitive': false })
     end
 
     def documents
