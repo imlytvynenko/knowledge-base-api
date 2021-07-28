@@ -15,6 +15,10 @@ module Postgresql
             with_defaults(columns: options[:columns].join(','))
         end
 
+        def create(options)
+          
+        end
+
         private
 
         def decorate_query_by_id_search(query)

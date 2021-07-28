@@ -26,6 +26,14 @@ module Postgresql
       to_article results[0].symbolize_keys
     end
 
+    def insert(options)
+      query = Queries::Article.insert({
+        columns: [:title, :content, :created_at, :updated_at]
+      }.merge(options).with_indifferent_access)
+
+      connection.execute(query)
+    end
+
     private
 
     def to_articles results

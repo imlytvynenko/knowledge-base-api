@@ -16,6 +16,18 @@ module Postgresql
             with_defaults(columns: options[:columns].join(','))
         end
 
+        def insert(options)
+          columns = options[:columns].join(',')
+      
+          values = options.slice(*options[:columns]).values.map{ |v| "'#{v}'" }.join(',')
+        
+          query = <<-SQL
+            INSERT INTO articles (%{columns}) VALUES (%{values});
+          SQL
+
+          query % { columns: columns, values: values }
+        end
+
         private
 
         def decorate_query_by_id_search(query)

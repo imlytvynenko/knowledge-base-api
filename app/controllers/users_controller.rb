@@ -6,13 +6,12 @@ class UsersController < ApplicationController
       i.data_provider = data_provider
     end
 
-    @user = use_case.perform(user_params)
+    user = use_case.perform(user_params)
 
-    if @user.present?
-      render json: @user, status: :created
+    if user.present?
+      render json: user, status: :created
     else
-      render json: { errors: 'User not found' },
-             status: :unprocessable_entity
+      render json: { errors: 'User not found' }, status: :unprocessable_entity
     end
   end
 
