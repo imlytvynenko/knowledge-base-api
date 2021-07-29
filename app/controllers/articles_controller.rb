@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  # before_action :authorize_request, only: :create
+  before_action :authorize_request, only: :create
 
   def index
     use_case = ::UseCases::Articles::Search.new do |i|
@@ -24,6 +24,7 @@ class ArticlesController < ApplicationController
   def create
     use_case = ::UseCases::Articles::Create.new do |i|
       i.data_provider = data_provider
+      i.context = { author: @current_user }
     end
 
     article = use_case.perform(articles_params)

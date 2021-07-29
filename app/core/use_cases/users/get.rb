@@ -7,8 +7,8 @@ module UseCases
         yield self
       end
       
-      def perform(params)
-        data_provider.find_by_email(options[:email])
+      def perform(id)
+        data_provider.find_by_id(id)
       end
     end
   end

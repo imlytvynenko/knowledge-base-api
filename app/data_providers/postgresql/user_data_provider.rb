@@ -9,16 +9,21 @@ module Postgresql
     end
 
     def insert(options)
-      query = <<-SQL
-        INSERT INTO users (username, email, password_digest, created_at, updated_at)
-        VALUES (\'#{options[:username]}\', \'#{options[:email]}\', \'#{options[:password_digest]}\', \'#{options[:created_at]}\', \'#{options[:updated_at]}\');
-      SQL
+      query = Queries::Article.insert({
+        columns: [:title, :content, :created_at, :updated_at, :author_id],
+        username: options[:title],
+        email: options[:content],
+        password_digest: options[:password_digest],
+        created_at: options[:created_at],
+        updated_at: options[:updated_at],
+        author_id: options[:author_id],
+      })
 
       connection.execute(query)
     end
 
-    def get(user_id)
-      query = Queries::User.select(columns: ['*'], id: user_id)
+    def find_by_id(id)
+      query = Queries::User.select(columns: ['*'], id: id)
 
       results = connection.execute(query) 
 

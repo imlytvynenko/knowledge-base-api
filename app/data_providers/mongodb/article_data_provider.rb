@@ -8,6 +8,13 @@ module Mongodb
       self.options = options
     end
 
+    def insert(options)
+      results = documents.insert_one(options)
+
+      fetch_details(results.inserted_id.to_s)
+    end
+
+
     def full_text_search(options)
       # NOTE: to use full-text you should create db text index
       results = data_scope(options[:term]).
@@ -21,6 +28,7 @@ module Mongodb
 
     def fetch_details article_id
       results = documents.find(:_id => BSON::ObjectId(article_id)).map { |document| document }
+
       to_article results[0].symbolize_keys
     end
 

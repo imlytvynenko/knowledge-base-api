@@ -15,8 +15,15 @@ module Postgresql
             with_defaults(columns: options[:columns].join(','))
         end
 
-        def create(options)
-          
+        def insert(options)
+          columns = options[:columns].join(',')
+          values = options.slice(*options[:columns]).values.map{ |v| "'#{v}'" }.join(',')
+        
+          query = <<-SQL
+            INSERT INTO users (%{columns}) VALUES (%{values});
+          SQL
+
+          query % { columns: columns, values: values }
         end
 
         private

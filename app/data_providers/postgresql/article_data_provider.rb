@@ -28,8 +28,12 @@ module Postgresql
 
     def insert(options)
       query = Queries::Article.insert({
-        columns: [:title, :content, :created_at, :updated_at]
-      }.merge(options).with_indifferent_access)
+        columns: [:title, :content, :created_at, :updated_at],
+        title: options[:title],
+        content: options[:content],
+        created_at: options[:created_at],
+        updated_at: options[:updated_at]
+      })
 
       connection.execute(query)
     end

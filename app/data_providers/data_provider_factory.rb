@@ -15,6 +15,7 @@ class DataProviderFactory
         article: Postgresql::ArticleDataProvider
       },
       mongodb: {
+        user: Mongodb::UserDataProvider,
         article: Mongodb::ArticleDataProvider
       } 
     }

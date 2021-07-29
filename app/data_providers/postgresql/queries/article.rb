@@ -18,7 +18,6 @@ module Postgresql
 
         def insert(options)
           columns = options[:columns].join(',')
-      
           values = options.slice(*options[:columns]).values.map{ |v| "'#{v}'" }.join(',')
         
           query = <<-SQL
