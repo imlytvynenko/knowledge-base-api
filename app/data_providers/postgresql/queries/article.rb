@@ -9,10 +9,10 @@ module Postgresql
           query = SELECT_QUERY
           query = decorate_query_by_id_search(query) if options[:id].present?
           query = decorate_query_by_search(query) if options[:term].present?
+          query = decorate_query_by_tagselection(query) if options[:tag].present?
           query = decorate_query_by_offset(query) if options[:offset].present?
 
-          query % options.
-            slice(:term, :offset, :id).
+          query % options.slice(:term, :tag, :offset, :id).
             with_defaults(columns: options[:columns].join(','))
         end
 
@@ -31,6 +31,10 @@ module Postgresql
 
         def decorate_query_by_id_search(query)
           query + "WHERE id = %{id}"
+        end
+
+        def decorate_query_by_tagselection(query)
+          query + "WHERE \'%{tag}\'=ANY(tags) "
         end
 
         def decorate_query_by_search(query)

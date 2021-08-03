@@ -14,7 +14,7 @@ module Mongodb
       fetch_details(results.inserted_id.to_s)
     end
 
-
+    
     def full_text_search(options)
       # NOTE: to use full-text you should create db text index
       results = data_scope(options[:term]).

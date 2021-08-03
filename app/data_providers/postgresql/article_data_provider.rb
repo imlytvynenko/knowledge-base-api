@@ -8,11 +8,26 @@ module Postgresql
       self.options = options
     end
 
+    def all_tags
+      query = 'SELECT DISTINCT unnest(articles.tags) FROM articles'
+
+      connection.execute(query).map { |e| e['unnest'] }
+    end
+
     def full_text_search(options)
       query = Queries::Article.select({ 
         columns: [:id, :title, :content, :created_at], 
         offset: options[:offset],
         term: options[:term]
+      })
+
+      connection.execute(query)
+    end
+
+    def fetch_by_tag(options)
+      query = Queries::Article.select({ 
+        columns: [:id, :title, :content, :created_at],
+        tag: options[:tag]
       })
 
       connection.execute(query)
