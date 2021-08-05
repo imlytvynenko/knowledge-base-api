@@ -8,7 +8,7 @@ module UseCases
       end
       
       def perform(id)
-        data_provider.find_by(id: id)
+        data_provider.find_by(:id, id)
       end
     end
   end

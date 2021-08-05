@@ -17,7 +17,8 @@ class DataProviderFactory
       },
       mongodb: {
         user: Mongodb::UserDataProvider,
-        article: Mongodb::ArticleDataProvider
+        article: Mongodb::ArticleDataProvider,
+        tag: Mongodb::TagDataProvider
       } 
     }
   end

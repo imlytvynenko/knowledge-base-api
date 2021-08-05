@@ -30,6 +30,11 @@ module Mongodb
       to_articles results
     end
 
+    def find_by(field, value)
+      # temporary disable
+      documents.find.map { |document| document }
+    end
+
     private
     
     def data_scope(searchTerm)
