@@ -8,13 +8,27 @@ module Postgresql
       self.options = options
     end
 
-    def all_tags
-      query = 'SELECT DISTINCT unnest(articles.tags) FROM articles'
+    def get article_id
+      query = Queries::Article.select(columns: ['*'], id: article_id)
 
-      connection.execute(query).map { |e| e['unnest'] }
+      results = connection.execute(query) 
+
+      to_article results[0].symbolize_keys
     end
 
-    def full_text_search(options)
+    def create options
+      query = Queries::Article.create({
+        columns: [:title, :content, :created_at, :updated_at],
+        title: options[:title],
+        content: options[:content],
+        created_at: options[:created_at],
+        updated_at: options[:updated_at]
+      })
+
+      connection.execute(query)
+    end
+
+    def search(options)
       query = Queries::Article.select({ 
         columns: [:id, :title, :content, :created_at], 
         offset: options[:offset],
@@ -24,31 +38,8 @@ module Postgresql
       connection.execute(query)
     end
 
-    def fetch_by_tag(options)
-      query = Queries::Article.select({ 
-        columns: [:id, :title, :content, :created_at],
-        tag: options[:tag]
-      })
-
-      connection.execute(query)
-    end
-
-    def fetch_details article_id
-      query = Queries::Article.select(columns: ['*'], id: article_id)
-
-      results = connection.execute(query) 
-
-      to_article results[0].symbolize_keys
-    end
-
-    def insert(options)
-      query = Queries::Article.insert({
-        columns: [:title, :content, :created_at, :updated_at],
-        title: options[:title],
-        content: options[:content],
-        created_at: options[:created_at],
-        updated_at: options[:updated_at]
-      })
+    def find_by(field, value)
+      query = Queries::Article.select(columns: [:id, :title, :content, :created_at], tag: value)
 
       connection.execute(query)
     end

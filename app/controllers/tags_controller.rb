@@ -14,6 +14,6 @@ class TagsController < ApplicationController
   private
 
   def data_provider
-    @data_provider ||= ::DataProviderFactory.build(:article)
+    @data_provider ||= ::DataProviderFactory.build(:tag)
   end
 end

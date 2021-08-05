@@ -8,15 +8,19 @@ module Mongodb
       self.options = options
     end
 
-    def insert(options)
-      results = documents.insert_one(options)
+    def get article_id
+      results = documents.find(:_id => BSON::ObjectId(article_id)).map { |document| document }
 
-      fetch_details(results.inserted_id.to_s)
+      to_article results[0].symbolize_keys
     end
 
-    
-    def full_text_search(options)
-      # NOTE: to use full-text you should create db text index
+    def create(options)
+      results = documents.insert_one(options)
+
+      get(results.inserted_id.to_s)
+    end
+
+    def search(options)
       results = data_scope(options[:term]).
         sort('created_at': 1).
         skip(options[:offset].to_i).
@@ -24,12 +28,6 @@ module Mongodb
         map { |document| document }
       
       to_articles results
-    end
-
-    def fetch_details article_id
-      results = documents.find(:_id => BSON::ObjectId(article_id)).map { |document| document }
-
-      to_article results[0].symbolize_keys
     end
 
     private

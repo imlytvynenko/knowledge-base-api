@@ -8,28 +8,16 @@ module Mongodb
       self.options = options
     end
 
-    def insert(options)
+    def create options
       documents.insert_one(options)
     end
 
-    def find_by_id(id)
-      results = documents.find(:_id => BSON::ObjectId(id)).map { |document| document }
+    def find_by(field, value)
+      options = query_options(field, value)
+      results = documents.find(options).map { |document| document }
 
       to_user results[0].symbolize_keys
     end
-
-    def find_by_username(username)
-      results = documents.find(username: username).map { |document| document }
-
-      to_user results[0].symbolize_keys
-    end
-
-    def find_by_email(email)
-      results = documents.find(email: email).map { |document| document }
-
-      to_user results[0].symbolize_keys
-    end
-
 
     private
 
@@ -47,6 +35,11 @@ module Mongodb
         created_at: result[:created_at].to_datetime,
         updated_at: result[:updated_at].to_datetime
       })
+    end
+
+    def query_options(field, value) 
+      return { :_id => BSON::ObjectId(value) } if field == :id
+      { field => value }
     end
   end
 end

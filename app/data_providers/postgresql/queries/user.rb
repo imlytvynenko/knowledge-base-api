@@ -15,7 +15,7 @@ module Postgresql
             with_defaults(columns: options[:columns].join(','))
         end
 
-        def insert(options)
+        def create options
           columns = options[:columns].join(',')
           values = options.slice(*options[:columns]).values.map{ |v| "'#{v}'" }.join(',')
         

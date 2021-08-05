@@ -12,7 +12,8 @@ class DataProviderFactory
     {
       postgresql: {
         user: Postgresql::UserDataProvider,
-        article: Postgresql::ArticleDataProvider
+        article: Postgresql::ArticleDataProvider,
+        tag: Postgresql::TagDataProvider
       },
       mongodb: {
         user: Mongodb::UserDataProvider,

@@ -9,7 +9,7 @@ module UseCases
         end
         
         def perform
-          data_provider.all_tags
+          data_provider.all
         end
       end
     end

@@ -10,9 +10,9 @@ module UseCases
       def perform(params)
         options = creation_options params
 
-        data_provider.insert(options)
+        data_provider.create(options)
 
-        data_provider.find_by_username(options[:username])
+        data_provider.find_by(:username, options[:username])
       end
 
       private

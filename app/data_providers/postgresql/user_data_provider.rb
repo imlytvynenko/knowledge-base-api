@@ -8,8 +8,8 @@ module Postgresql
       self.options = options
     end
 
-    def insert(options)
-      query = Queries::Article.insert({
+    def create(options)
+      query = Queries::Article.create({
         columns: [:title, :content, :created_at, :updated_at, :author_id],
         username: options[:title],
         email: options[:content],
@@ -22,24 +22,8 @@ module Postgresql
       connection.execute(query)
     end
 
-    def find_by_id(id)
-      query = Queries::User.select(columns: ['*'], id: id)
-
-      results = connection.execute(query) 
-
-      to_user results[0].symbolize_keys
-    end
-
-    def find_by_username(username)
-      query = Queries::User.select(columns: ['*'], username: username)
-
-      results = connection.execute(query) 
-
-      to_user results[0].symbolize_keys
-    end
-
-    def find_by_email(email)
-      query = Queries::User.select(columns: ['*'], email: email)
+    def find_by(field, value)
+      query = Queries::User.select(:columns => ['*'], field => value)
 
       results = connection.execute(query) 
 

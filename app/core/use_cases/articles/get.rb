@@ -8,7 +8,7 @@ module UseCases
       end
       
       def perform(article_id:)
-        data_provider.fetch_details(article_id)
+        data_provider.get(article_id)
       end
     end
   end

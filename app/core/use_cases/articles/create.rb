@@ -10,7 +10,7 @@ module UseCases
       def perform(params)
         options = creation_options(params)
 
-        data_provider.insert(options)
+        data_provider.create(options)
       end
 
       private

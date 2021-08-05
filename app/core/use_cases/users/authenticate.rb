@@ -22,7 +22,7 @@ module UseCases
       private
 
       def set_user(email)
-        @user = data_provider.find_by_email(email)
+        @user = data_provider.find_by(email: email)
       end
 
       def set_password

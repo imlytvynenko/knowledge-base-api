@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
 
     articles = use_case.perform(params.slice(:offset, :limit, :term, :tag))
 
-    render json: { articles: articles }
+    render json: { articles: articles, limit: BARCH_LIMIT }
   end
 
   def show

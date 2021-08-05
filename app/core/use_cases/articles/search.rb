@@ -8,7 +8,9 @@ module UseCases
       end
       
       def perform(options)
-        options[:tag].present? ? data_provider.fetch_by_tag(options) : data_provider.full_text_search(options)
+        return data_provider.find_by(:tag, options[:tag]) if  options[:tag].present? 
+        
+        data_provider.search(options)
       end
     end
   end
