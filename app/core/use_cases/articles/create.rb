@@ -17,7 +17,7 @@ module UseCases
 
       def creation_options(params)
         params.to_h.
-          slice(:title, :content).
+          slice(:title, :content, :tags).
           with_defaults({
             created_at: Time.zone.now,
             updated_at: Time.zone.now,

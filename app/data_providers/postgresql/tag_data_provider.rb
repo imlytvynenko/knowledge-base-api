@@ -10,8 +10,8 @@ module Postgresql
 
     def all
       query = 'SELECT DISTINCT unnest(articles.tags) FROM articles'
-
-      connection.execute(query).map { |e| e['unnest'] }
+      
+      @all ||= connection.execute(query).map { |e| e['unnest'] }
     end
   end
 end

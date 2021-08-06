@@ -39,7 +39,7 @@ class ArticlesController < ApplicationController
   private
 
   def articles_params
-    params.permit(:title, :content)
+    params.permit(:title, :content, :tags)
   end
 
   def data_provider

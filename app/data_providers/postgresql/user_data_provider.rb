@@ -9,15 +9,15 @@ module Postgresql
     end
 
     def create(options)
-      query = Queries::Article.create({
-        columns: [:title, :content, :created_at, :updated_at, :author_id],
-        username: options[:title],
-        email: options[:content],
+      query = Queries::User.create({
+        columns: [:username, :email, :created_at, :updated_at, :password_digest],
+        username: options[:username],
+        email: options[:email],
         password_digest: options[:password_digest],
         created_at: options[:created_at],
-        updated_at: options[:updated_at],
-        author_id: options[:author_id],
+        updated_at: options[:updated_at]
       })
+
 
       connection.execute(query)
     end

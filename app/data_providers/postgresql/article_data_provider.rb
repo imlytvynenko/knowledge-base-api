@@ -18,9 +18,10 @@ module Postgresql
 
     def create options
       query = Queries::Article.create({
-        columns: [:title, :content, :created_at, :updated_at],
+        columns: [:title, :content, :tags, :created_at, :updated_at],
         title: options[:title],
         content: options[:content],
+        tags: '{' + options[:tags] + '}',
         created_at: options[:created_at],
         updated_at: options[:updated_at]
       })
